@@ -1,0 +1,55 @@
+import type { Metadata } from "next";
+import { Roboto } from 'next/font/google';
+import "./globals.css";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
+import TanStackProvider from '../components/TanStackProvider/TanStackProvider'
+
+export const metadata:Metadata={
+  title: "NoteHub",
+  description: "Created by GoIT student",
+  openGraph:{
+    title: "NoteHub - Organize Your Notes Easily",
+    description:
+      "Create, edit, and manage your notes anytime with NoteHub. Keep your thoughts organized and accessible from anywhere.",
+    url:'https://notehub.com/',
+    images: [
+      {
+        url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        width: 1200,
+        height: 630,
+        alt: "NoteHub app interface preview",
+      },
+    ],
+    
+  }
+}
+
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-roboto',
+  display: 'swap',
+});
+
+export default function RootLayout({
+  children,
+  modal
+}: Readonly<{
+  children: React.ReactNode;
+  modal:React.ReactNode,
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${roboto.variable}`}>
+        <TanStackProvider>
+          <Header/>
+          {children}
+          {modal}
+          <Footer/>
+        </TanStackProvider>
+        
+      </body>
+    </html>
+  );
+}
