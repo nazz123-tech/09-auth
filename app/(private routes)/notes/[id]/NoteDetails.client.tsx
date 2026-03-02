@@ -1,7 +1,7 @@
 "use client";
 import css from './NoteDetails.module.css';
 import { useQuery } from "@tanstack/react-query";
-import { fetchNoteById } from "../../../lib/api";
+import { fetchNoteById } from "../../../lib/clientApi";
 import { notFound } from "next/navigation";
 type Props = {
   noteId: string;
