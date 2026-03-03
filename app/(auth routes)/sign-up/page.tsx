@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { register, RegisterRequest } from "@/lib/api/clientApi"
+import { register, Request } from "@/lib/api/clientApi"
 import { ApiError } from '@/app/api/api'
 import css from './SignUpPage.module.css'
 import { useAuthStore } from "@/lib/store/authStore"
@@ -11,7 +11,7 @@ const SignUp=()=>{
     const setUser=useAuthStore((state)=>state.setUser)
    const handleSubmit= async(formData:FormData)=>{
     try{
-        const formValues=Object.fromEntries(formData) as RegisterRequest;
+        const formValues=Object.fromEntries(formData) as Request;
     const res=await register(formValues)
     if(res){
       setUser(res)
