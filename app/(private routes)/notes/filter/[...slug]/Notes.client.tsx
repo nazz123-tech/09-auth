@@ -29,7 +29,7 @@ const NotesClient = ({ category }: NotesClientProps) => {
   });
 
   const notes = data?.notes ?? [];
-  const totalPages = data?.totalPages ?? 0;
+  const totalPages = data?.totalPage ?? 0;
 
   const changeQuery = (query: string) => {
     setQuery(query);
