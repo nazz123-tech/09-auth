@@ -1,23 +1,19 @@
 import type { Note } from "@/types/note";
 import { nextServer } from "./api";
 import { User } from "@/types/user";
-import next from "next";
 
 export interface FetchNotesResponse{
     notes: Note[],
     totalPage: number
 }
-interface FetchNotesParams {
+export interface FetchNotesParams {
   search?: string;
   page?: number;
   perPage: number;
   tag?: string;
 }
-export type RegisterRequest={
-  email:string,
-  password:string
-}
-export type LoginRequest={
+
+export type Request={
   email:string,
   password:string
 }
@@ -32,7 +28,7 @@ type CheckSessionRequest={
 }
 
 
-const validTags = ["all", "Todo", "Personal", "Work", "Meeting", "Shopping"];
+export const validTags = ["all", "Todo", "Personal", "Work", "Meeting", "Shopping"];
 
 export const fetchNotes = async (
   tag: string,
@@ -81,11 +77,11 @@ export const fetchNotesByTag = async (
   return data;
 }
 
-export const register=async(data:RegisterRequest)=>{
+export const register=async(data:Request)=>{
   const res = await nextServer.post<User>('/auth/register',data);
   return res.data
 }
-export const login=async(data:RegisterRequest)=>{
+export const login=async(data:Request)=>{
   const res = await nextServer.post<User>('/auth/login',data);
   return res.data
 }
@@ -101,12 +97,12 @@ export const getMe=async()=>{
 export const logout=async():Promise<void>=>{
   await nextServer.post('/auth/logout')
 }
+
 export type UpdateUserRequest = {
-  userName?: string;
-  photoUrl?: string;
+  username?: string;
 };
 
 export const updateMe = async (payload: UpdateUserRequest) => {
-  const res = await nextServer.put<User>('/users/me', payload);
+  const res = await nextServer.patch<User>('/users/me', payload);
   return res.data;
 };

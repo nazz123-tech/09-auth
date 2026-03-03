@@ -1,4 +1,4 @@
-import { fetchNotes } from "@/lib/api/clientApi";
+import { fetchServerNotes } from "@/lib/api/serverApi";
 import { Metadata } from "next";
 import {
   dehydrate,
@@ -40,7 +40,7 @@ const NotesByCategory = async ({ params }: Props) => {
  const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ['notes', category],
-    queryFn: () => fetchNotes(category),
+    queryFn: () => fetchServerNotes(category),
   });
 
   return (
