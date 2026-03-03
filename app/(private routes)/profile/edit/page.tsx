@@ -13,22 +13,36 @@ export default function EditPage() {
   );
   const [email, setEmail] = useState('');
 const setUser = useAuthStore((state) => state.setUser);
-  useEffect(() => {
-    getMe().then((user) => {
-      setUserName(user.username ?? '');
-      setPhotoUrl(
-        user.avatar ??
-          'https://ac.goit.global/fullstack/react/default-avatar.jpg',
-      );
-      setEmail(user.email ?? '');
+ useEffect(() => {
+  let isMounted = true; 
+
+  getMe()
+    .then((user) => {
+      if (isMounted) {
+        setUserName(user.username ?? '');
+        setPhotoUrl(
+          user.avatar ??
+            'https://ac.goit.global/fullstack/react/default-avatar.jpg',
+        );
+        setEmail(user.email ?? '');
+      }
+    })
+    .catch((err) => {
+      if (isMounted) {
+        console.error('Помилка при отриманні користувача:', err);
+      }
     });
-  }, []);
+
+  return () => {
+    isMounted = false; 
+  };
+}, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserName(e.target.value);
   };
 
-  const handelServerUser = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleServerUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const updatedUser = await updateMe({ username: userName });
     setUser(updatedUser)
@@ -49,7 +63,7 @@ const setUser = useAuthStore((state) => state.setUser);
             loading='eager'
           />
 
-          <form onSubmit={handelServerUser} className={css.profileInfo}>
+          <form onSubmit={handleServerUser} className={css.profileInfo}>
             <div className={css.usernameWrapper}>
               <label htmlFor='username'>Username:</label>
               <input
