@@ -28,14 +28,18 @@ export const getServerMe = async (): Promise<User> => {
   });
   return data;
 };
+
 export const fetchServerNoteById = async (id: string): Promise<Note> => {
-  const { data } = await nextServer.get<Note>(`/notes/${id}`,{
-    headers:{
+  const cookieStore = await cookies();
+  const { data } = await nextServer.get<Note>(`/notes/${id}`, {
+    headers: {
       Cookie: cookieStore.toString(),
     },
   });
+
   return data;
 };
+
 export const fetchServerNotes = async (
   tag: string,
   query?: string,
@@ -45,21 +49,19 @@ export const fetchServerNotes = async (
     throw new Error(`Invalid tag: ${tag}`);
   }
 
-  const params: FetchNotesParams = {
-    perPage: 12,
-  };
-
+  const params: FetchNotesParams = { perPage: 12 };
   if (query) params.search = query;
   if (page) params.page = page;
-  if (tag !== "all") params.tag = tag;
+  if (tag !== 'all') params.tag = tag;
 
-  const { data } = await nextServer.get<FetchNotesResponse>("/notes", { 
+  const cookieStore = await cookies();
+
+  const { data } = await nextServer.get<FetchNotesResponse>('/notes', {
     params,
-    headers:{
-      Cookie:cookieStore.toString(),
-    }
-   });
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
 
   return data;
 };
-

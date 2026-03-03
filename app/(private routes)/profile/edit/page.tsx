@@ -4,7 +4,7 @@ import Image from 'next/image';
 import css from './EditProfilePage.module.css';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { useAuthStore } from '@/lib/store/authStore';
 export default function EditPage() {
   const router = useRouter();
   const [userName, setUserName] = useState('');
@@ -12,7 +12,7 @@ export default function EditPage() {
     'https://ac.goit.global/fullstack/react/default-avatar.jpg',
   );
   const [email, setEmail] = useState('');
-
+const setUser = useAuthStore((state) => state.setUser);
   useEffect(() => {
     getMe().then((user) => {
       setUserName(user.username ?? '');
@@ -30,7 +30,8 @@ export default function EditPage() {
 
   const handelServerUser = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await updateMe({ username: userName });
+    const updatedUser = await updateMe({ username: userName });
+    setUser(updatedUser)
     router.push('/profile');
   };
   return (
@@ -67,7 +68,7 @@ export default function EditPage() {
                 Save
               </button>
               <button
-                onClick={() => router.back}
+                onClick={() => router.back()}
                 type='button'
                 className={css.cancelButton}
               >

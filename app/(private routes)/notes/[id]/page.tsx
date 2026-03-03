@@ -1,4 +1,4 @@
-import { fetchNoteById } from "@/lib/api/clientApi"
+import { fetchServerNoteById } from "@/lib/api/serverApi"
 import { Metadata } from "next";
 import {
   QueryClient,
@@ -12,7 +12,7 @@ type Props = {
 };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const note = await fetchNoteById(id)
+  const note = await fetchServerNoteById(id)
   return {
     title: `Note: ${note.title}`,
     description: note.content.slice(0, 30),
@@ -40,7 +40,7 @@ const NoteDetails = async ({ params }: Props) => {
 
   await queryClient.prefetchQuery({
     queryKey: ["note", id],
-    queryFn: () => fetchNoteById(id),
+    queryFn: () => fetchServerNoteById(id),
   });
   
   return (

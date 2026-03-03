@@ -13,15 +13,16 @@ const NoteDetailsClient = ({ noteId }: Props) => {
     queryFn: () => fetchNoteById(noteId),
     refetchOnMount: false,
   });
-  if (!note){
-    notFound()
-  }
+ 
 
-    if (isLoading) {
+  if (isLoading) {
     return <p>Loading, please wait...</p>
   }
   if (isError) {
     return <p>Something went wrong.</p>
+  }
+   if (!note){
+    notFound()
   }
   return (
     

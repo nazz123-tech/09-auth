@@ -38,7 +38,6 @@ export const fetchNotes = async (
   if (!validTags.includes(tag)) {
     throw new Error(`Invalid tag: ${tag}`);
   }
-
   const params: FetchNotesParams = {
     perPage: 12,
   };
@@ -66,22 +65,12 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
   return data;
 };
 
-export const fetchNotesByTag = async (
-  tag?: string,
-  page: number = 1,
-  perPage: number = 20
-): Promise<FetchNotesResponse> => {
-  const { data } = await nextServer.get<FetchNotesResponse>('/notes', {
-    params: { tag, page, perPage },
-  });
-  return data;
-}
 
-export const register=async(data:Request)=>{
+export const register=async(data:Request):Promise<User>=>{
   const res = await nextServer.post<User>('/auth/register',data);
   return res.data
 }
-export const login=async(data:Request)=>{
+export const login=async(data:Request):Promise<User>=>{
   const res = await nextServer.post<User>('/auth/login',data);
   return res.data
 }
@@ -102,7 +91,7 @@ export type UpdateUserRequest = {
   username?: string;
 };
 
-export const updateMe = async (payload: UpdateUserRequest) => {
+export const updateMe = async (payload: UpdateUserRequest):Promise<User> => {
   const res = await nextServer.patch<User>('/users/me', payload);
   return res.data;
 };
